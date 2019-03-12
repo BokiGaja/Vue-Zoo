@@ -9,11 +9,11 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="animal in animals">
+        <tr v-for="animal in animals" @click="removeAnimal(animals.indexOf(animal))">
             <th scope="row">{{ animals.indexOf(animal) + 1 }}</th>
             <td>{{ animal.specie }}</td>
             <td>{{ animal.name }}</td>
-            <td>{{ animal.date ? animal.date : 'Nepoznat' }}</td>
+            <td>{{ animal.date ? animal.date : 'Unknown' }}</td>
         </tr>
         </tbody>
     </table>
@@ -30,6 +30,11 @@
                     {specie: 'horse', name: 'Stud', date: '24.12.2010'},
                     {specie: 'pig', name: 'Hans', date: '25.12.2010'}
                 ]
+            }
+        },
+        methods: {
+            removeAnimal(index) {
+                this.animals.splice(index,1);
             }
         }
     }
