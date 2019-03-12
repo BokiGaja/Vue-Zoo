@@ -9,11 +9,13 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="animal in animals" @click="removeAnimal(animals.indexOf(animal))">
+        <tr v-for="(animal, index) in animals">
             <th scope="row">{{ animals.indexOf(animal) + 1 }}</th>
             <td>{{ animal.specie }}</td>
             <td>{{ animal.name }}</td>
             <td>{{ animal.date ? animal.date : 'Unknown' }}</td>
+            <button class="btn btn-primary" @click="moveAnimal(animal, index)">Move to top</button>
+            <button class="btn btn-danger" @click="removeAnimal(index)">Remove</button>
         </tr>
         </tbody>
     </table>
@@ -35,6 +37,10 @@
         methods: {
             removeAnimal(index) {
                 this.animals.splice(index,1);
+            },
+            moveAnimal(animal, index) {
+                this.animals.splice(index,1);
+                this.animals.unshift(animal);
             }
         }
     }
