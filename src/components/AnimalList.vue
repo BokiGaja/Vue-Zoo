@@ -78,13 +78,8 @@
             },
             addAnimal() {
                 if (this.newAnimal.specie !== '' && this.newAnimal.name !== '') {
-                    const newAnimal = {
-                        specie: this.newAnimal.specie,
-                        name: this.newAnimal.name,
-                        date: moment(this.newAnimal.date).format('MMMM Do YYYY'),
-                        sector: this.newAnimal.sector
-                    };
-                    this.animals.push(newAnimal);
+
+                    this.animals.push({...this.newAnimal});
                     this.newAnimal.specie = '';
                     this.newAnimal.name = '';
                     this.newAnimal.date = '';
