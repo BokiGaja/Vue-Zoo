@@ -14,13 +14,12 @@
             <button class="btn btn-success" type="submit">Add animal</button>
         </form>
         <table class="table">
-            <thead>
+            <thead class="thread-dark">
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Specie</th>
                 <th scope="col">Name</th>
                 <th scope="col">Date of birth</th>
-                <th scope="col">Sector</th>
             </tr>
             </thead>
             <tbody>
@@ -29,9 +28,20 @@
                 <th>{{ animal.specie }}</th>
                 <td>{{ animal.name }}</td>
                 <td>{{ animal.date ? animal.date : 'Unknown' }}</td>
-                <td>{{ animal.sector }}</td>
                 <button class="btn btn-primary" @click="moveAnimal(animal, index)">Move to top</button>
                 <button class="btn btn-danger" @click="removeAnimal(index)">Remove</button>
+            </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th scope="col">Sectors</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="sector in sectors">
+                <button class="btn btn-info" style="margin: 5px" @click="seeAnimals(sector)">{{ sector }}</button>
             </tr>
             </tbody>
         </table>
@@ -45,17 +55,16 @@
                 newAnimal: {
                     specie: '',
                     name: '',
-                    date: '',
-                    sector: ''
+                    date: ''
                 },
                 animals: [
                     {specie: 'dog', name: 'Jack', date: '21.12.2010', sector: 'mammal'},
                     {specie: 'cat', name: 'Kitty', date: '', sector: 'mammal'},
                     {specie: 'fish', name: 'Nemo', date: '23.12.2010', sector: 'fish'},
-                    {specie: 'horse', name: 'Stud', date: '24.12.2010', sector: 'mammal'},
-                    {specie: 'pig', name: 'Hans', date: '25.12.2010', sector: 'mammal'}
+                    {specie: 'snake', name: 'Samuel', date: '24.12.2010', sector: 'snake'},
+                    {specie: 'snake', name: 'Poison', date: '25.12.2010', sector: 'snake'}
                 ],
-                sectors: ['birds', 'mammals', 'snakes']
+                sectors: ['mammal', 'fish', 'snake']
             }
         },
         methods: {
@@ -82,6 +91,14 @@
                 } else {
                     alert('You must insert values to all fields')
                 }
+            },
+            seeAnimals(sector) {
+                const animals = this.animals.map(animal => {
+                    if (animal.sector === sector) {
+                        return animal.name
+                    }
+                });
+                alert(`${sector}s: ${animals}`);
             }
         }
     }
