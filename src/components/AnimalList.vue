@@ -13,7 +13,7 @@
             <th scope="row">{{ animals.indexOf(animal) + 1 }}</th>
             <td>{{ animal.specie }}</td>
             <td>{{ animal.name }}</td>
-            <td>{{ animal.date }}</td>
+            <td>{{ animal.date ? animal.date : 'Nepoznat' }}</td>
         </tr>
         </tbody>
     </table>
@@ -25,7 +25,7 @@
             return {
                 animals: [
                     {specie: 'dog', name: 'Jack', date: '21.12.2010'},
-                    {specie: 'cat', name: 'Kitty', date: '22.12.2010'},
+                    {specie: 'cat', name: 'Kitty', date: ''},
                     {specie: 'fish', name: 'Nemo', date: '23.12.2010'},
                     {specie: 'horse', name: 'Stud', date: '24.12.2010'},
                     {specie: 'pig', name: 'Hans', date: '25.12.2010'}
