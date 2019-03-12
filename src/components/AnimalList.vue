@@ -6,7 +6,7 @@
             <br>
             <input type="text" v-model="newAnimal.name" placeholder="name">
             <br>
-            <input type="text" v-model="newAnimal.date" placeholder="date">
+            <input type="text" v-model="newAnimal.date" placeholder="date (MM/DD/YYYY)">
             <br>
             <select class="form-control form-control-sm" style="width: 200px; margin: auto" v-model="newAnimal.sector">
                 <option v-for="sector in sectors">{{ sector }}</option>
@@ -49,6 +49,7 @@
 </template>
 
 <script>
+    import moment from 'moment'
     export default {
         data() {
             return {
@@ -58,11 +59,11 @@
                     date: ''
                 },
                 animals: [
-                    {specie: 'dog', name: 'Jack', date: '21.12.2010', sector: 'mammal'},
+                    {specie: 'dog', name: 'Jack', date: moment('2.12.2010').format('MMMM Do YYYY'), sector: 'mammal'},
                     {specie: 'cat', name: 'Kitty', date: '', sector: 'mammal'},
-                    {specie: 'fish', name: 'Nemo', date: '23.12.2010', sector: 'fish'},
-                    {specie: 'snake', name: 'Samuel', date: '24.12.2010', sector: 'snake'},
-                    {specie: 'snake', name: 'Poison', date: '25.12.2010', sector: 'snake'}
+                    {specie: 'fish', name: 'Nemo', date: moment('2.19.2010').format('MMMM Do YYYY'), sector: 'fish'},
+                    {specie: 'snake', name: 'Samuel', date: moment('2.19.2010').format('MMMM Do YYYY'), sector: 'snake'},
+                    {specie: 'snake', name: 'Poison', date: moment('2.22.2010').format('MMMM Do YYYY'), sector: 'snake'}
                 ],
                 sectors: ['mammal', 'fish', 'snake']
             }
@@ -80,7 +81,7 @@
                     const newAnimal = {
                         specie: this.newAnimal.specie,
                         name: this.newAnimal.name,
-                        date: this.newAnimal.date,
+                        date: moment(this.newAnimal.date).format('MMMM Do YYYY'),
                         sector: this.newAnimal.sector
                     };
                     this.animals.push(newAnimal);
@@ -93,12 +94,14 @@
                 }
             },
             seeAnimals(sector) {
-                const animals = this.animals.map(animal => {
+                let animals= [];
+                this.animals.forEach(animal => {
                     if (animal.sector === sector) {
-                        return animal.name
+                        animals.push(animal.name);
                     }
-                });
-                alert(`${sector}s: ${animals}`);
+                } );
+                const animalNames = animals.join(', ');
+                alert(`${sector}s: ${animalNames}`);
             }
         }
     }
