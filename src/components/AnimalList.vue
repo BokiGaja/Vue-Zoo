@@ -1,20 +1,20 @@
 <template>
-    <div>
-        <form action="" @submit.prevent="addAnimal()">
+    <div class="container">
+        <form action="" @submit.prevent="addAnimal">
             <h4>Add a new animal</h4>
-            <input type="text" v-model="newAnimal.specie" placeholder="specie">
+            <input type="text" v-model="animal.specie" placeholder="specie" required>
             <br>
-            <input type="text" v-model="newAnimal.name" placeholder="name">
+            <input type="text" v-model="animal.name" placeholder="name" required>
             <br>
-            <input type="text" v-model="newAnimal.date" placeholder="date (MM/DD/YYYY)">
+            <input type="text" v-model="animal.date" placeholder="date (MM/DD/YYYY)">
             <br>
-            <select class="form-control form-control-sm" style="width: 200px; margin: auto" v-model="newAnimal.sector">
-                <option v-for="sector in sectors">{{ sector }}</option>
+            <select class="form-control form-control-sm" style="width: 210px; margin: auto" v-model="animal.sector">
+                <option v-for="sector in sectors" :key="sector" :value="sector">{{ sector }}</option>
             </select>
-            <button class="btn btn-success" type="submit">Add animal</button>
+            <button class="btn btn-success" type="submit" style="margin: 5px;">Add animal</button>
         </form>
         <table class="table">
-            <thead class="thread-dark">
+            <thead class="thead-dark">
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Specie</th>
@@ -27,7 +27,7 @@
                 <th scope="row">{{ animals.indexOf(animal) + 1 }}</th>
                 <th>{{ animal.specie }}</th>
                 <td>{{ animal.name }}</td>
-                <td>{{ animal.date ? animal.date : 'Unknown' }}</td>
+                <td>{{ animal.date || 'Unknown' }}</td>
                 <button class="btn btn-primary" @click="moveAnimal(animal, index)">Move to top</button>
                 <button class="btn btn-danger" @click="removeAnimal(index)">Remove</button>
             </tr>
@@ -53,10 +53,11 @@
     export default {
         data() {
             return {
-                newAnimal: {
+                animal: {
                     specie: '',
                     name: '',
-                    date: ''
+                    date: '',
+                    sector: ''
                 },
                 animals: [
                     {specie: 'dog', name: 'Jack', date: moment('2.12.2010').format('MMMM Do YYYY'), sector: 'mammal'},
@@ -68,26 +69,35 @@
                 sectors: ['mammal', 'fish', 'snake']
             }
         },
+
         methods: {
+
             removeAnimal(index) {
                 this.animals.splice(index,1);
             },
+
             moveAnimal(animal, index) {
                 this.animals.splice(index,1);
                 this.animals.unshift(animal);
             },
-            addAnimal() {
-                if (this.newAnimal.specie !== '' && this.newAnimal.name !== '') {
 
-                    this.animals.push({...this.newAnimal});
-                    this.newAnimal.specie = '';
-                    this.newAnimal.name = '';
-                    this.newAnimal.date = '';
-                    this.newAnimal.sector = '';
+            clearAnimalObj() {
+                this.animal.specie = '';
+                this.animal.name = '';
+                this.animal.date = '';
+                this.animal.sector = '';
+            },
+
+            addAnimal() {
+                // I added this check as two layers validation, in case someone change inputs require
+                if (this.animal.specie !== '' && this.animal.name !== '') {
+                    this.animals.push({...this.animal});
+                    this.clearAnimalObj();
                 } else {
                     alert('You must insert values to all fields')
                 }
             },
+
             seeAnimals(sector) {
                 let animals= [];
                 this.animals.forEach(animal => {
