@@ -1,12 +1,12 @@
 <template>
     <div class="container">
-        <form action="" @submit.prevent="addAnimal">
+        <form @submit.prevent="addAnimal">
             <h4>Add a new animal</h4>
             <input type="text" v-model="animal.specie" placeholder="specie" required>
             <br>
             <input type="text" v-model="animal.name" placeholder="name" required>
             <br>
-            <input type="text" v-model="animal.date" placeholder="date (MM/DD/YYYY)">
+            <input type="text" v-model="animal.birthDate" placeholder="date (MM/DD/YYYY)">
             <br>
             <select class="form-control form-control-sm" style="width: 210px; margin: auto" v-model="animal.sector">
                 <option v-for="sector in sectors" :key="sector" :value="sector">{{ sector }}</option>
@@ -23,12 +23,12 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(animal, index) in animals">
-                <th scope="row">{{ animals.indexOf(animal) + 1 }}</th>
+            <tr v-for="(animal, index) in animals" :key="index">
+                <th scope="row">{{ (index+1) }}</th>
                 <th>{{ animal.specie }}</th>
                 <td>{{ animal.name }}</td>
-                <td>{{ animal.date || 'Unknown' }}</td>
-                <button class="btn btn-primary" @click="moveAnimal(animal, index)">Move to top</button>
+                <td>{{ animal.birthDate || 'Unknown' }}</td>
+                <button class="btn btn-primary" @click="moveAnimal(index)">Move to top</button>
                 <button class="btn btn-danger" @click="removeAnimal(index)">Remove</button>
             </tr>
             </tbody>
@@ -56,15 +56,15 @@
                 animal: {
                     specie: '',
                     name: '',
-                    date: '',
+                    birthDate: '',
                     sector: ''
                 },
                 animals: [
-                    {specie: 'dog', name: 'Jack', date: moment('2.12.2010').format('MMMM Do YYYY'), sector: 'mammal'},
-                    {specie: 'cat', name: 'Kitty', date: '', sector: 'mammal'},
-                    {specie: 'fish', name: 'Nemo', date: moment('2.19.2010').format('MMMM Do YYYY'), sector: 'fish'},
-                    {specie: 'snake', name: 'Samuel', date: moment('2.19.2010').format('MMMM Do YYYY'), sector: 'snake'},
-                    {specie: 'snake', name: 'Poison', date: moment('2.22.2010').format('MMMM Do YYYY'), sector: 'snake'}
+                    {specie: 'dog', name: 'Jack', birthDate: moment('2.12.2010').format('MMMM Do YYYY'), sector: 'mammal'},
+                    {specie: 'cat', name: 'Kitty', birthDate: '', sector: 'mammal'},
+                    {specie: 'fish', name: 'Nemo', birthDate: moment('2.19.2010').format('MMMM Do YYYY'), sector: 'fish'},
+                    {specie: 'snake', name: 'Samuel', birthDate: moment('2.19.2010').format('MMMM Do YYYY'), sector: 'snake'},
+                    {specie: 'snake', name: 'Poison', birthDate: moment('2.22.2010').format('MMMM Do YYYY'), sector: 'snake'}
                 ],
                 sectors: ['mammal', 'fish', 'snake']
             }
@@ -76,26 +76,21 @@
                 this.animals.splice(index,1);
             },
 
-            moveAnimal(animal, index) {
-                this.animals.splice(index,1);
-                this.animals.unshift(animal);
+            moveAnimal(index) {
+                this.animals.unshift(this.animals[index]);
+                this.animals.splice(index+1,1);
             },
 
             clearAnimalObj() {
                 this.animal.specie = '';
                 this.animal.name = '';
-                this.animal.date = '';
+                this.animal.birthDate = '';
                 this.animal.sector = '';
             },
 
             addAnimal() {
-                // I added this check as two layers validation, in case someone change inputs require
-                if (this.animal.specie !== '' && this.animal.name !== '') {
                     this.animals.push({...this.animal});
                     this.clearAnimalObj();
-                } else {
-                    alert('You must insert values to all fields')
-                }
             },
 
             seeAnimals(sector) {
